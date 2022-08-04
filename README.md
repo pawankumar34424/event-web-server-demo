@@ -17,3 +17,16 @@ If you don't have nvm installed I suggest that you install it because it is by f
 
 ## Starting Point  
 Simple Web server interacting with simple API server that uses volatile storage. Data will be stored in an array on the API server.
+
+# Docker Run
+
+docker build . -t api-server-image:v1.0.0
+
+docker build . -t web-server-image:v1.0.0
+
+docker network create --driver bridge events-net
+
+docker run -d -p 8082:8082 --net events-net --name api-server api-server-image:v1.0.0
+
+docker run -d -p 8080:8080 -e API_SERVER='http://api-server:8082' --net events-net --name web-server web-server-image:v1.0.0
+
