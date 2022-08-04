@@ -30,3 +30,13 @@ docker run -d -p 8082:8082 --net events-net --name api-server api-server-image:v
 
 docker run -d -p 8080:8080 -e API_SERVER='http://api-server:8082' --net events-net --name web-server web-server-image:v1.0.0
 
+aws eks --region us-east-1 update-kubeconfig --name cnd-events-cluster
+
+kubctl create namespace user09
+
+kubectl apply -f api-server-deployment.yaml -n user09
+kubectl apply -f api-server-service.yaml -n user09
+kubectl apply -f  web-server-deployment.yaml -n user09
+kubectl apply -f web-server-service.yaml -n user09
+
+kubectl get svc -n user09
