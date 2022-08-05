@@ -40,3 +40,11 @@ kubectl apply -f  web-server-deployment.yaml -n user09
 kubectl apply -f web-server-service.yaml -n user09
 
 kubectl get svc -n user09
+
+curl -L https://git.io/get_helm.sh | bash -s -- --version v3.8.2
+
+helm install database-server bitnami/mariadb -n user09
+
+kubectl run database-server-mariadb-client --rm --tty -i --restart='Never' --image  docker.io/bitnami/mariadb:10.6.8-debian-11-r23 --namespace user09 --command -- bash
+	
+mysql -h database-server-mariadb.user09.svc.cluster.local -uroot -p my_database
